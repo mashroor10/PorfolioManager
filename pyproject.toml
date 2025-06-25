@@ -1,0 +1,22 @@
+[project]
+name = "porfoliomanager"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "backtesting>=0.6.4",
+    "cvxpy>=1.6.6",
+    "dotenv>=0.9.9",
+    "ipykernel>=6.29.5",
+    "matplotlib>=3.10.3",
+    "pandas>=2.2.3",
+    "pip>=25.1.1",
+    "psycopg2-binary>=2.9.10",
+    "requests>=2.32.3",
+    "scipy>=1.15.3",
+    "seaborn>=0.13.2",
+    "sqlalchemy>=2.0.41",
+    "tqdm>=4.67.1",
+    "yfinance>=0.2.61",
+]

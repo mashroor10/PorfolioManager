@@ -192,3 +192,11 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+TestJptrs/PortofolioManager/optimizedData
+TestJptrs/PortofolioManager/optimPorts
+TestJptrs/nonMTBTValue.txt
+
+# CSV handling
+*.csv          # Ignore all CSV files
+!TestJptrs/PortofolioManager/optimDf_0.25_25 (1).csv # Except this specific file
