@@ -200,5 +200,5 @@ TestJptrs/PortofolioManager/eodData.csv
 TestJptrs/PortofolioManager/optimDf_0.25_25 (1).csv
 
 # CSV handling
-*.csv          # Ignore all CSV files
-File TestJptrs/PortofolioManager/*.csv
+*.csv          
+TestJptrs/PortofolioManager/*.csv
