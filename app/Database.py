@@ -165,3 +165,69 @@ class PostgresManager:
         except Exception as e:
             print(f"❌ Failed to inspect tables: {e}")
             return []
+        
+    def getLastDateInfo(self, ticker: str):
+        """
+        Returns a dictionary with the last available date for each data type for the given ticker.
+        Example:
+        {
+            "30MinData": "2024-06-10 15:30:00",
+            "EOD_Data": "2024-06-10",
+            "FundamentalsData": "2024-03-31",
+            "CombinedData": "2024-06-10"
+        }
+        If a table does not exist or is empty, the value will be None.
+        """
+        result = {}
+        table_types = {
+            "EOD_Data": f"{ticker.upper()}_EOD_Data",
+            "FundamentalsData": f"{ticker.upper()}_FundamentalsData",
+            "CombinedData": f"{ticker.upper()}_CombinedData"
+        }
+        for key, table_name in table_types.items():
+            try:
+                query = f'SELECT MAX("date") as last_date FROM "{table_name}"'
+                df = pd.read_sql_query(query, self.engine)
+                last_date = df["last_date"].iloc[0] if not df.empty else None
+                result[key] = str(last_date) if pd.notnull(last_date) else None
+            except Exception:
+                result[key] = None
+        return result
+    
+    def extendEODData(self, ticker: str, new_data: pd.DataFrame):
+        """
+        Extends the EOD data for a given ticker with new data.
+        Assumes new_data has 'date' column in datetime format.
+        """
+        table_name = f"{ticker.upper()}_EOD_Data"
+        try:
+            new_data.to_sql(table_name, self.engine, if_exists='append', index=False, method='multi')
+            print(f"✅ Extended EOD data for {ticker} with {len(new_data)} new rows.")
+        except Exception as e:
+            print(f"❌ Failed to extend EOD data for {ticker}: {e}")
+            
+    def extendFundamentalsData(self, ticker: str, new_data: pd.DataFrame):
+        """
+        Extends the fundamentals data for a given ticker with new data.
+        Assumes new_data has 'date' column in datetime format.
+        """
+        table_name = f"{ticker.upper()}_FundamentalsData"
+        try:
+            new_data.to_sql(table_name, self.engine, if_exists='append', index=False, method='multi')
+            print(f"✅ Extended fundamentals data for {ticker} with {len(new_data)} new rows.")
+        except Exception as e:
+            print(f"❌ Failed to extend fundamentals data for {ticker}: {e}")
+            
+    def extendCombinedData(self, ticker: str, new_data: pd.DataFrame):
+        """
+        Extends the combined data for a given ticker with new data.
+        Assumes new_data has 'date' column in datetime format.
+        """
+        table_name = f"{ticker.upper()}_CombinedData"
+        try:
+            new_data.to_sql(table_name, self.engine, if_exists='append', index=False, method='multi')
+            print(f"✅ Extended combined data for {ticker} with {len(new_data)} new rows.")
+        except Exception as e:
+            print(f"❌ Failed to extend combined data for {ticker}: {e}")
+        
+        

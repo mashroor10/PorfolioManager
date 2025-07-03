@@ -318,12 +318,10 @@ class EbitdaValueStrategy(TradingStrategy):
         for ticker in self.tickerResults:
             tickerEquityCurve = self.tickerResults[ticker]['_equity_curve'] ## is a dataframe
             tickerEquityCurve['Return']= tickerEquityCurve['Equity'].pct_change().fillna(0)
-            # tickerEquityCurve['rolling_sharpe_90'] = self.calculateRollingSharpe(
-            #                                     tickerEquityCurve['Return'],
-            #                                     window=90,
-            #                                 )
+        
             
-            all_returns[ticker] = tickerEquityCurve['Return']
+            all_returns[f'{ticker}_return'] = tickerEquityCurve['Return']
+            all_returns[f'{ticker}_close'] = tickerEquityCurve['Equity']
             
         returns_df = pd.DataFrame(all_returns)
 
